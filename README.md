@@ -121,25 +121,60 @@ The script sleeps between requests:
 
 ## Search Terms
 
-**Core hashtags (Quick scan):**
+The default wordlist targets malware market infrastructure. Swap `CORE_TERMS` and `ALL_TERMS` in the script to redirect the scanner at different threat surfaces. Save your output files before switching (rename `osint_channels.txt` etc.) — each scan overwrites them.
+
+---
+
+### Wordlist Variations
+
+**Malware market** (`telegram_osint_malware.py` — preserved backup)
+
+Targets: RAT sellers, stealer builders, crypter services, C2 infrastructure, malware-as-a-service operators.
 ```
-#RAT #RemoteTool #HackerTools #LifetimeAccess
-#Stealer #Crypter #Bypass #CyberTools #Logger #Keylogger
+Core:     #RAT #RemoteTool #HackerTools #LifetimeAccess #Stealer #Crypter
+          #Bypass #CyberTools #Logger #Keylogger
+Extended: #Malware #Spyware #Botnet #FUD #Undetected #C2 #Payload #Dropper
+          #InfoStealer #PrivateTools #Exploit #Shell #Backdoor #Ransomware
+          #Phishing #Grabber #Cracker #Brute #Combo #Checker
+Families: AsyncRAT DCRat RedLine Raccoon Vidar LummaC2 EagleSpy NjRAT
+          QuasarRAT XWorm Remcos AgentTesla FormBook SnakeKeylogger
 ```
 
-**Extended tags (Full scan adds):**
+---
+
+**Scammer / stalker / fraud** (`telegram_osint.py` — current default)
+
+Targets: romance scammers, stalkerware buyers/sellers, carding operations, SIM swappers, doxxers, social engineering kit sellers, identity theft services.
 ```
-#Malware #Spyware #Botnet #FUD #Undetected #C2 #Payload #Dropper
-#InfoStealer #PrivateTools #Exploit #Shell #Backdoor #Ransomware
-#Phishing #Grabber #Cracker #Brute #Combo #Checker
+Core:     #RomanceScam #PigButchering #Stalkerware #PhoneSpy #Carding
+          #Fullz #OTPBypass #SIMSwap #Doxx #ScamPage
+Extended: #CryptoScam #InvestmentScam #BankLogs #AccountTakeover
+          #FakeID #FakePassport #IdentityTheft #PersonalData
+          #Smishing #Vishing #SEKit #SocialEngineering
+          #LocationTracker #GPSTracker #SpyApp #HiddenApp
+          #DataBreach #Doxing #Lure #CVV #CashOutMethod
+Apps:     FlexiSPY mSpy Cerberus AhMyth Pegasus
 ```
 
-**Malware families (Full scan):**
+---
+
+**Threat intel / defensive research** (build your own)
+
+Targets: legitimate security researchers, vulnerability feeds, IOC sharing channels, breach notifications, red team tooling. These channels post actionable intel rather than selling access.
 ```
-AsyncRAT DCRat RedLine Raccoon Vidar LummaC2
-EagleSpy Eclipse C2 NjRAT QuasarRAT XWorm
-Remcos AgentTesla FormBook SnakeKeylogger
+Core:     #ThreatIntel #IOC #CVE #Vulnerability #MalwareAnalysis
+          #DataLeak #Breach #RedTeam #BugBounty #PenTest
+Extended: #0day #Exploit #APT #Ransomware #ThreatHunting
+          #DFIR #IncidentResponse #Indicators #YARA #Sigma
+          #CyberThreat #InfoSec #BlueTeam #SOC #SIEM
+Tools:    Cobalt Strike Metasploit Sliver Havoc Brute Ratel
+          Nuclei BurpSuite Nmap Mimikatz
+Groups:   #CTF #HackTheBox #TryHackMe #WriteUp #Reversing
 ```
+
+What you find here is different in character — researchers sharing samples, IOC lists, YARA rules, leaked tool drops, breach databases being discussed before they hit the news. High signal-to-noise compared to the malware market channels.
+
+---
 
 To add terms: edit `ALL_TERMS` or `CORE_TERMS` in the script.
 
