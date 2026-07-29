@@ -1,0 +1,9 @@
+*.session
+*.session-journal
+osint_results.json
+osint_channels.txt
+osint_groups.txt
+osint_recon.txt
+osint_members.txt
+__pycache__/
+*.pyc
