@@ -1,10 +1,8 @@
 # Telegram OSINT Scanner
 
-A Telegram threat intelligence tool that maps public malware infrastructure by hashtag and keyword.
-Finds channels and groups advertising RATs, stealers, crypters, and other offensive tooling.
-Runs four operational modes from a single menu.
+Telegram OSINT Scanner — a Telethon-based, read-only tool that scans public Telegram channels and groups for keywords and hashtags, classifies hits as broadcast channels or supergroups, and exports structured results and member lists to local files. Supports full/quick scans, channel recon and group scraping; for authorized threat intelligence use only—run with local API credentials on a throwaway account to avoid rate limits and OPSEC risk.
 
-Built and tested live. Confirmed 175+ unique channels on first run.
+
 <img width="1665" height="867" alt="image" src="https://github.com/user-attachments/assets/06a53bae-77a9-4cb6-bbb3-b78a3155940c" />
 
 ---
