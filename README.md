@@ -5,6 +5,7 @@ Finds channels and groups advertising RATs, stealers, crypters, and other offens
 Runs four operational modes from a single menu.
 
 Built and tested live. Confirmed 175+ unique channels on first run.
+<img width="1665" height="867" alt="image" src="https://github.com/user-attachments/assets/06a53bae-77a9-4cb6-bbb3-b78a3155940c" />
 
 ---
 
