@@ -1,0 +1,15 @@
+
+[2026-08-21 12:00:03] === AUTO-DISTRIBUTE START ===
+[*] Using: @telethonman
+[*] 166 remaining (6 already sent)
+[*] Target breakdown:
+    op_israel: 166 targets → IL_DATABASE (msgs [27, 28])
+
+[!] Peer flood - stopping session
+
+[*] Session complete:
+    Sent: 0
+    Total sent all time: 6
+    Remaining: 166
+[12:00:04] === AUTO-DISTRIBUTE END ===
+
