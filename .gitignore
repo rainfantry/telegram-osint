@@ -1,9 +1,20 @@
 *.session
 *.session-journal
+__pycache__/
+*.pyc
+
+# Data files - do not commit
 osint_results.json
 osint_channels.txt
 osint_groups.txt
 osint_recon.txt
 osint_members.txt
-__pycache__/
-*.pyc
+osint_members.json
+scan_results.json
+deep_scan_results.json
+extremist_results.json
+new_targets.json
+threat_actors.json
+distribute.log
+sent_users.txt
+config.py
