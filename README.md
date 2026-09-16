@@ -221,7 +221,7 @@ The author accepts no liability for misuse.
 This project is free and open source. If you find it useful, consider supporting continued development:
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow.svg)](https://buymeacoffee.com/rainfantry)
-
+support my fan's work: https://github.com/GCastle-MTE/SentinelFusion
 We work tirelessly to build tools that help people get shit done - no paywalls, no subscriptions, just code that works. Your support helps keep it that way.
 
 ### Wall of Legends
